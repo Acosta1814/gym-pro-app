@@ -4,7 +4,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// Llave global para poder mostrar SnackBars desde cualquier parte de la app (como el temporizador)
 final GlobalKey<ScaffoldMessengerState> snackbarKey =
     GlobalKey<ScaffoldMessengerState>();
 
@@ -85,11 +84,11 @@ class TimerService {
 final timerService = TimerService();
 
 // ==========================================
-// MODELOS DE DATOS (Con Modo Tiempo Integrado)
+// MODELOS DE DATOS
 // ==========================================
 class Ejercicio {
   String nombre, series, repeticiones, peso, unidad, tiempo;
-  bool esTiempo; // Determina si es isométrico (segundos) o hipertrofia (reps)
+  bool esTiempo;
 
   Ejercicio({
     required this.nombre,
@@ -117,7 +116,7 @@ class Ejercicio {
     repeticiones: map['repeticiones'] ?? '0',
     peso: map['peso']?.toString() ?? '0',
     unidad: map['unidad'] ?? 'kg',
-    tiempo: map['tiempo']?.toString() ?? '0', // Fallback para rutinas viejas
+    tiempo: map['tiempo']?.toString() ?? '0',
     esTiempo: map['esTiempo'] ?? false,
   );
 }
@@ -494,7 +493,7 @@ class _MainNavigatorState extends State<MainNavigator> {
 }
 
 // ==========================================
-// PANTALLA 1: ENTRENAR (CON MÉTRICAS INTELIGENTES)
+// PANTALLA 1: ENTRENAR
 // ==========================================
 class HomeScreen extends StatelessWidget {
   final List<Rutina> rutinas;
@@ -679,7 +678,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 // ==========================================
-// PANTALLA 2: NUEVA RUTINA (SWITCH DE TIEMPO)
+// PANTALLA 2: NUEVA RUTINA
 // ==========================================
 class FormularioScreen extends StatefulWidget {
   final Function(Rutina) onGuardarRutina;
@@ -696,7 +695,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
   bool _cargandoEjercicios = true;
   String _ejercicioBuscado = '';
 
-  // Variables para el modo Isométrico
   bool _modoTiempo = false;
   final _tiempoController = TextEditingController();
 
@@ -711,7 +709,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
     _obtenerEjerciciosDeAPI();
   }
 
-  // MEGA DICCIONARIO
   String _traducirEjercicio(String nombreIngles) {
     String nombre = nombreIngles.toLowerCase();
 
@@ -879,7 +876,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
   void _agregarEjercicioTemporal() {
     if (_ejercicioBuscado.isEmpty || _seriesController.text.isEmpty) return;
 
-    // Validación dependiente del modo
     if (!_modoTiempo && _repsController.text.isEmpty) return;
     if (_modoTiempo && _tiempoController.text.isEmpty) return;
 
@@ -1034,7 +1030,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
 
             const SizedBox(height: 12),
 
-            // SWITCH PARA CAMBIAR ENTRE REPS Y TIEMPO
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: const Text(
@@ -1066,7 +1061,6 @@ class _FormularioScreenState extends State<FormularioScreen> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                // Muestra Reps o Segundos dependiendo del Switch
                 if (!_modoTiempo)
                   Expanded(
                     child: TextFormField(
