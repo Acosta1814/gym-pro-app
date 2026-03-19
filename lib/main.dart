@@ -1360,9 +1360,9 @@ class _ProgresoScreenState extends State<ProgresoScreen> {
   }
 }
 
-// ==========================================
+// ========================================
 // PANTALLA 4: PERFIL
-// ==========================================
+// ========================================
 class PerfilScreen extends StatefulWidget {
   const PerfilScreen({super.key});
   @override
